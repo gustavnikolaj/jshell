@@ -7,14 +7,16 @@ describe('jshell', function () {
         expect(jshell, 'to be a function');
     });
     it('should return an object with a lines method', function () {
-        expect(jshell('echo', 'foo'), 'to satisfy', {
-            lines: expect.it('to be a function')
-        });
+        expect(jshell('echo', 'foo').lines, 'to be a function');
+        // expect(jshell('echo', 'foo'), 'to satisfy', {
+        //     lines: expect.it('to be a function')
+        // });
     });
     it('should return an object with a pipe method', function () {
-        expect(jshell('echo', 'foo'), 'to satisfy', {
-            pipe: expect.it('to be a function')
-        });
+        expect(jshell('echo', 'foo').pipe, 'to be a function');
+        // expect(jshell('echo', 'foo'), 'to satisfy', {
+        //     pipe: expect.it('to be a function')
+        // });
     });
     describe('lines', function () {
         it('should pass the output lines of the jshell command to the callback', function (done) {
