@@ -1,16 +1,19 @@
 {
   "name": "jshell",
   "version": "0.0.0",
-  "description": "",
+  "description": "shell interface from node",
   "main": "lib/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Gustav Nikolaj Olsen <gno@one.com>",
-  "license": "BSD-3-Clause",
+  "contributors": [
+    "Sune Simonsen <sune@weknowhow.dk>"
+  ],
+  "license": "MIT",
   "devDependencies": {
     "mocha": "2.0.1",
     "unexpected": "5.0.0-beta15"
