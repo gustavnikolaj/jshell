@@ -18,6 +18,24 @@ describe('jshell', function () {
         //     pipe: expect.it('to be a function')
         // });
     });
+    describe('toBuffer', function () {
+        it('should pass the output buffer of the jshell command to the callback', function (done) {
+            jshell('echo', 'foo').toBuffer(function (err, data) {
+                expect(err, 'to be null');
+                expect(data, 'to equal', new Buffer('foo\n'));
+                done();
+            });
+        });
+    });
+    describe('toString', function () {
+        it('should pass the output string of the jshell command to the callback', function (done) {
+            jshell('echo', 'foo').toString(function (err, data) {
+                expect(err, 'to be null');
+                expect(data, 'to equal', 'foo\n');
+                done();
+            });
+        });
+    });
     describe('lines', function () {
         it('should pass the output lines of the jshell command to the callback', function (done) {
             jshell('echo', 'foo').lines(function (err, data) {
