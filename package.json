@@ -14,8 +14,5 @@
   "devDependencies": {
     "mocha": "2.0.1",
     "unexpected": "5.0.0-beta15"
-  },
-  "dependencies": {
-    "unexpected": "5.0.0-beta15"
   }
 }
