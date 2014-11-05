@@ -94,6 +94,15 @@ describe('jshell', function () {
             });
         });
     });
+    describe('quoting of arguments', function () {
+        it('quotes arguments that contains spaces', function () {
+            expect(
+                jshell('ssh', 'foo.example.com', jshell('cat', '/data/logs/foo.log').pipe('grep', 'lorem ipsum').toString()).toString(),
+                'to equal',
+                'ssh foo.example.com "cat /data/logs/foo.log | grep \\"lorem ipsum\\""'
+            );
+        });
+    });
     describe.skip('backticks', function () {
         it('should be able to consume a pipe of commands as arguments', function (done) {
             // echo `echo bar`
