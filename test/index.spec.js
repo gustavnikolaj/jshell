@@ -36,6 +36,11 @@ describe('jshell', function () {
             pipe: expect.it('to be a function')
         });
     });
+    it('should be able to call the constructor without the first command', function () {
+        expect(function () {
+            jshell();
+        }, 'not to throw');
+    });
     describe('buffer', function () {
         it('should pass the output buffer of the jshell command to the callback', function (done) {
             jshell('echo', 'foo').buffer(function (err, data) {
