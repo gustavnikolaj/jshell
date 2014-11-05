@@ -103,4 +103,12 @@ describe('jshell', function () {
             });
         });
     });
+    describe.skip('and', function () {
+        it('should execute commands in sequence with the && operator', function (done) {
+            jshell('echo', 'foo').and('echo', 'bar').lines(function (err, data) {
+                expect(data, 'to equal', ['foo', 'bar']);
+                done();
+            });
+        });
+    });
 });
