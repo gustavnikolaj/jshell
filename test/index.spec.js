@@ -3,6 +3,7 @@ var expect = require('unexpected');
 var jshell = require('../lib/index');
 var stream = require('stream');
 var util = require('util');
+var Promise = require('bluebird');
 
 function WritableMemoryStream(options) {
     if (!(this instanceof WritableMemoryStream)) {
@@ -35,32 +36,47 @@ describe('jshell', function () {
             pipe: expect.it('to be a function')
         });
     });
-    describe('toBuffer', function () {
+    describe('buffer', function () {
         it('should pass the output buffer of the jshell command to the callback', function (done) {
-            jshell('echo', 'foo').toBuffer(function (err, data) {
+            jshell('echo', 'foo').buffer(function (err, data) {
                 expect(err, 'to be null');
                 expect(data, 'to equal', new Buffer('foo\n'));
                 done();
             });
         });
+
+        it('supports promises', function (done) {
+            var promise = jshell('echo', 'foo').buffer();
+            expect(promise, 'to be a', Promise);
+            promise.then(function (data) {
+                expect(data, 'to equal', new Buffer('foo\n'));
+            }).lastly(done);
+        });
     });
     describe('toString', function () {
-        describe('given no arguments', function () {
-            it('should return a string representing the command pipeline', function () {
-                expect(jshell('echo', 'foo').pipe('grep', 'foo').toString(), 'to equal', 'echo foo | grep foo');
+        it('returns a string representing the command pipeline', function () {
+            expect(jshell('echo', 'foo').pipe('grep', 'foo').toString(), 'to equal', 'echo foo | grep foo');
+        });
+    });
+
+    describe('text', function () {
+        it('should pass the output string of the jshell command to the callback', function (done) {
+            jshell('echo', 'foo').text(function (err, data) {
+                expect(err, 'to be null');
+                expect(data, 'to equal', 'foo\n');
+                done();
             });
         });
 
-        describe('given a callback', function () {
-            it('should pass the output string of the jshell command to the callback', function (done) {
-                jshell('echo', 'foo').toString(function (err, data) {
-                    expect(err, 'to be null');
-                    expect(data, 'to equal', 'foo\n');
-                    done();
-                });
-            });
+        it('supports promises', function (done) {
+            var promise = jshell('echo', 'foo').text();
+            expect(promise, 'to be a', Promise);
+            promise.then(function (data) {
+                expect(data, 'to equal', 'foo\n');
+            }).lastly(done);
         });
     });
+
     describe('lines', function () {
         it('should pass the output lines of the jshell command to the callback', function (done) {
             jshell('echo', 'foo').lines(function (err, data) {
@@ -68,6 +84,14 @@ describe('jshell', function () {
                 expect(data, 'to equal', ['foo']);
                 done();
             });
+        });
+
+        it('supports promises', function (done) {
+            var promise = jshell('echo', 'foo').lines();
+            expect(promise, 'to be a', Promise);
+            promise.then(function (data) {
+                expect(data, 'to equal', ['foo']);
+            }).lastly(done);
         });
     });
     describe('pipe', function () {
