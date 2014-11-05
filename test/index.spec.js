@@ -145,6 +145,7 @@ describe('jshell', function () {
     });
     describe.skip('and', function () {
         it('should execute commands in sequence with the && operator', function (done) {
+            // (echo 'foo' && echo 'bar' && echo 'baz') | grep -E "foo|baz"
             jshell('echo', 'foo').and('echo', 'bar').and('echo', 'baz').pipe('grep', '-E', 'foo|baz').lines(function (err, data) {
                 expect(data, 'to equal', ['foo', 'baz']);
                 done();
