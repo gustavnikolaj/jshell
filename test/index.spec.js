@@ -136,9 +136,9 @@ describe('jshell', function () {
     });
     describe.skip('backticks', function () {
         it('should be able to consume a pipe of commands as arguments', function (done) {
-            // echo `echo bar`
-            jshell().pipe('echo', jshell('echo', 'bar')).lines(function (err, data) {
-                expect(data, 'to equal', ['bar']);
+            // echo Hello `echo world`
+            jshell().pipe('echo', 'Hello', jshell('echo', 'world')).lines(function (err, data) {
+                expect(data, 'to equal', ['Hello world']);
                 done();
             });
         });
