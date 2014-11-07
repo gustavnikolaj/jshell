@@ -22,18 +22,6 @@ WritableMemoryStream.prototype._write = function (chunk, enc, cb) {
     cb();
 };
 
-function UpperCaseTransformStream(options) {
-    if (!(this instanceof UpperCaseTransformStream)) {
-        return new UpperCaseTransformStream(options);
-    }
-    stream.Transform.call(this, options);
-}
-util.inherits(UpperCaseTransformStream, stream.Transform);
-
-UpperCaseTransformStream.prototype._transform = function (data, encoding, cb) {
-    cb(null, new Buffer(data.toString('utf-8').toUpperCase()));
-};
-
 describe('jshell', function () {
     it('should be a function', function () {
         expect(jshell, 'to be a function');
@@ -132,11 +120,6 @@ describe('jshell', function () {
             writableStream.on('finish', function () {
                 expect(writableStream.buffer.toString(), 'to equal', 'foo\n');
                 done();
-            });
-        });
-        it('should pipe throug a duplex stream', function () {
-            jshell('echo', 'foo').pipe(new UpperCaseTransformStream()).text(function (err, data) {
-                expect(data, 'to equal', 'FOO\n');
             });
         });
     });
