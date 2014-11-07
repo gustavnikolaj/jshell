@@ -19,6 +19,8 @@
     "unexpected": "5.0.0-beta15"
   },
   "dependencies": {
-    "bluebird": "2.3.10"
+    "async": "0.9.0",
+    "bluebird": "2.3.10",
+    "passerror": "1.1.0"
   }
 }
