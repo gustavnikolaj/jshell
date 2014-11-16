@@ -159,6 +159,19 @@ describe('jshell', function () {
             });
         });
     });
+    describe('is readable', function () {
+        it('data is forwarded through events', function (done) {
+            var sh = jshell('echo', 'foo\nbar\nbaz');
+            var chunks = [];
+            sh.on('data', function (data) {
+                chunks.push(data);
+            });
+            sh.on('end', function (data) {
+                expect(Buffer.concat(chunks).toString('utf-8'), 'to equal', 'foo\nbar\nbaz\n');
+                done();
+            });
+        });
+    });
     describe('is writable', function () {
         it('data can be written to the stream', function (done) {
             var writableStream = new WritableMemoryStream();
