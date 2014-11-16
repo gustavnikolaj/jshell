@@ -2,6 +2,8 @@
 var expect = require('unexpected');
 var jshell = require('../lib/index');
 var stream = require('stream');
+var Writable = stream.Writable;
+var Readable = stream.Readable;
 var util = require('util');
 var Promise = require('bluebird');
 
@@ -9,10 +11,10 @@ function WritableMemoryStream(options) {
     if (!(this instanceof WritableMemoryStream)) {
         return new WritableMemoryStream(options);
     }
-    stream.Writable.call(this, options);
+    Writable.call(this, options);
     this.buffer = new Buffer('');
 }
-util.inherits(WritableMemoryStream, stream.Writable);
+util.inherits(WritableMemoryStream, Writable);
 
 WritableMemoryStream.prototype._write = function (chunk, enc, cb) {
     var buffer = (Buffer.isBuffer(chunk)) ?
@@ -153,6 +155,44 @@ describe('jshell', function () {
             // (echo 'foo' && echo 'bar' && echo 'baz') | grep -E "foo|baz"
             jshell('echo', 'foo').and('echo', 'bar').and('echo', 'baz').pipe('grep', '-E', 'foo|baz').lines(function (err, data) {
                 expect(data, 'to equal', ['foo', 'baz']);
+                done();
+            });
+        });
+    });
+    describe('is writable', function () {
+        it('data can be written to the stream', function (done) {
+            var writableStream = new WritableMemoryStream();
+            var sh = jshell('grep', '-E', 'foo|baz');
+            sh.pipe(writableStream);
+            sh.write('foo\n', 'utf-8');
+            sh.write('bar\n', 'utf-8');
+            sh.write('baz\n', 'utf-8');
+            sh.write('foo\n', 'utf-8');
+            sh.write('bar\n', 'utf-8');
+            sh.write('baz\n', 'utf-8');
+            sh.end();
+            writableStream.on('finish', function () {
+                expect(writableStream.buffer.toString(), 'to equal', 'foo\nbaz\nfoo\nbaz\n');
+                done();
+            });
+        });
+        it('streams can be piped to jshell', function (done) {
+            var rs = new Readable();
+            rs.push('foo\n');
+            rs.push('bar\n');
+            rs.push('baz\n');
+            rs.push('foo\n');
+            rs.push('bar\n');
+            rs.push('baz\n');
+            rs.push(null);
+
+            var writableStream = new WritableMemoryStream();
+            var sh = jshell('grep', '-E', 'foo|baz');
+            sh.pipe(writableStream);
+
+            rs.pipe(sh);
+            writableStream.on('finish', function () {
+                expect(writableStream.buffer.toString(), 'to equal', 'foo\nbaz\nfoo\nbaz\n');
                 done();
             });
         });
