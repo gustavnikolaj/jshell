@@ -12,6 +12,22 @@ describe('jshell', function () {
             return expect(stream, 'to yield output satisfying', new Buffer('foobar\n'));
         });
     });
+    describe('args', function () {
+        it('should throw when not passing any args', function () {
+            return expect(function () {
+                jshell();
+            }, 'to throw', /pass some arg/);
+        });
+        it('should allow you to pass a string with a simple command', function () {
+            return expect(jshell('echo foobar'), 'to yield output satisfying', new Buffer('foobar\n'));
+        });
+        it('should allow you to pass a string with a simple command 2', function () {
+            return expect(jshell('echo'), 'to yield output satisfying', new Buffer('\n'));
+        });
+        it('should allow you to pass many strings as args', function () {
+            return expect(jshell('echo', 'foo', 'bar'), 'to yield output satisfying', new Buffer('foo bar\n'));
+        });
+    })
 
     describe.skip('old tests', function () {
         var stream = require('stream');
