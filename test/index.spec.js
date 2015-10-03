@@ -1,8 +1,18 @@
 /*global describe, it*/
-var expect = require('unexpected');
+var expect = require('unexpected')
+    .clone()
+    .use(require('unexpected-stream'));
 var jshell = require('../lib/index');
 
 describe('jshell', function () {
+    describe('pipe', function () {
+        it('should be able to pipe', function () {
+            var stream = jshell('echo', ['foobar'])
+                .pipe(jshell('grep', ['bar']));
+            return expect(stream, 'to yield output satisfying', new Buffer('foobar\n'));
+        });
+    });
+
     describe.skip('old tests', function () {
         var stream = require('stream');
         var Writable = stream.Writable;

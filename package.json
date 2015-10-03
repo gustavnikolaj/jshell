@@ -16,7 +16,8 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "2.3.3",
-    "unexpected": "9.16.0"
+    "unexpected": "9.16.0",
+    "unexpected-stream": "1.3.0"
   },
   "dependencies": {
     "fwd-stream": "1.0.4"
