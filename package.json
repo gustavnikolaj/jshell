@@ -15,12 +15,10 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "mocha": "2.0.1",
-    "unexpected": "5.0.0-beta15"
+    "mocha": "2.3.3",
+    "unexpected": "9.16.0"
   },
   "dependencies": {
-    "async": "0.9.0",
-    "bluebird": "2.3.10",
-    "passerror": "1.1.0"
+    "fwd-stream": "1.0.4"
   }
 }
