@@ -30,22 +30,9 @@ describe('jshell', function () {
     })
 
     describe('promise', function () {
-        it('should buffer up the and resolve with the value', function (done) {
-            jshell('echo foo').then(function (output) {
-                expect(output, 'to equal', new Buffer('foobar\n'));
-                done();
-            })
-            //return expect(jshell('echo foobar'), 'to be fulfilled with', new Buffer('foobar\n'));
-            // Fails with:
-            // expected Duplex to be fulfilled with Buffer([0x66, 0x6F, 0x6F, 0x62, 0x61, 0x72, 0x0A])
-            //   The assertion 'to be fulfilled with' is not defined for the type 'Stream',
-            //   but it is defined for the type 'Promise'
-            //
-            // The old api would have required you to call
-            // jshell('echo foobar').buffer() before you got a promise.
-            // I would like that not to be necessary, as there is no ambiguity
-            // wrt. the intention of the caller. As long as there's some check
-            // that you don't call both .pipe and .then on the same jshell.
+        var expect = require('unexpected').clone(); // TODO: remove once unexpected is upgraded to v10
+        it('should buffer up the and resolve with the value', function () {
+            return expect(jshell('echo foobar'), 'to be fulfilled with', new Buffer('foobar\n'));
         });
     });
 
