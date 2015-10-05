@@ -54,7 +54,7 @@ describe('jshell', function () {
         var Writable = stream.Writable;
         var Readable = stream.Readable;
         var util = require('util');
-        var Promise = require('bluebird');
+        //var Promise = require('bluebird');
 
         function WritableMemoryStream(options) {
             if (!(this instanceof WritableMemoryStream)) {
