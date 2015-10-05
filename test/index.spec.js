@@ -29,12 +29,19 @@ describe('jshell', function () {
         });
     })
 
+    describe('promise', function () {
+        var expect = require('unexpected').clone(); // TODO: remove once unexpected is upgraded to v10
+        it('should buffer up the and resolve with the value', function () {
+            return expect(jshell('echo foobar'), 'to be fulfilled with', new Buffer('foobar\n'));
+        });
+    });
+
     describe.skip('old tests', function () {
         var stream = require('stream');
         var Writable = stream.Writable;
         var Readable = stream.Readable;
         var util = require('util');
-        var Promise = require('bluebird');
+        //var Promise = require('bluebird');
 
         function WritableMemoryStream(options) {
             if (!(this instanceof WritableMemoryStream)) {
